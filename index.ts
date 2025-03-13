@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express, { Express, Request, Response } from "express";
 import articleController from "./controllers/articleController";
+import commentController from "./controllers/commentController";
 
 mongoose.connect(
   "mongodb+srv://mykhailodrogovoz:ZmGFiBmmuXjMFC79@cluster0.fa4uj.mongodb.net/"
@@ -24,6 +25,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/", articleController);
+
+app.use("/", commentController);
 
 app.listen(3000, () => {
   console.log(`[server]: Server is running at http://localhost:3000`);

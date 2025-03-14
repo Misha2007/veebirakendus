@@ -3,9 +3,7 @@ import express, { Express, Request, Response } from "express";
 import articleController from "./controllers/articleController";
 import commentController from "./controllers/commentController";
 
-mongoose.connect(
-  "mongodb+srv://mykhailodrogovoz:ZmGFiBmmuXjMFC79@cluster0.fa4uj.mongodb.net/"
-);
+mongoose.connect("mongodb+srv://username:password.mongodb.net/");
 const database = mongoose.connection;
 
 database.on("error", (error) => {

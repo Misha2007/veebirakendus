@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import Article from "../models/article";
+import Comment from "../models/comment";
 
 const router: Router = Router();
 
@@ -53,6 +54,44 @@ router.put("/article/:id", async (req: Request, res: Response) => {
     const options = { new: true };
 
     const result = await Article.findByIdAndUpdate(id, updatedData, options);
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
+
+router.post("/article/:id/comment", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const comment = new Comment({
+      date: new Date(),
+      content: req.body.content,
+      article: id,
+    });
+
+    const savedComment = await comment.save();
+
+    const updatedArticle = await Article.findByIdAndUpdate(
+      id,
+      { $push: { comments: savedComment._id } },
+      { new: true }
+    ).populate("comments");
+
+    res.status(200).json(updatedArticle);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: error.message || "An unexpected error occurred" });
+  }
+});
+
+router.get("/article/:id/comment", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const result = await Article.findById(id).populate("comments");
 
     res.send(result);
   } catch (error) {

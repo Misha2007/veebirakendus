@@ -14,6 +14,11 @@ const comment = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Article",
   },
+  author: {
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Author",
+  },
 });
 
 export default mongoose.model("Comment", comment);
